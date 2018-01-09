@@ -127,7 +127,7 @@ History files are saved with a time stamp in the file name.
 
 The editor’s History features shows you how many history files are present in the history folder. The editor creates the history folder during the first commit. After a while you might want to delete some of the older history files that would not be useful to keep. The “History Has xx Files” button opens the history folder in the Windows Explorer where you can then delete the unneeded prior keynote table files.
 
-##Starting from Scratch
+## Starting from Scratch
 
 Starting from scratch means there is not a user KeyNote table text file and therefore the Revit project does not have such a file set as its UserKeyNote table file.
 
@@ -155,7 +155,7 @@ Revit will have loaded the file you selected. Save and sync the Revit project fi
 
 Close out the KeyNote Editor by selecting the Quit Tab. Again, click on the KeyNote Editor icon in the Revit ribbon. The KeyNote Editor should now launch and have the proper KeyNote table file loaded.
 
-##About Revit User KeyNotes and why this tool does what it does and why it does not do certain things.
+## About Revit User KeyNotes and why this tool does what it does and why it does not do certain things.
 
 A Revit **User KeyNote** is a special tag type family instance that "tags" model objects only with annotation showing a key value, like a number for example. That key value is associated to some text. The associated text and its key value is maintained in a “**Keynote Table**” text file outside of and therefore separate from the Revit file.
 
@@ -254,7 +254,7 @@ Removing an entire category is an edit best left to editing the User KeyNote tab
 
 The Revit ribbon command that runs the KeyNote editor application assumes the current Revit project file is workshared. It uses the workshared file's central file path as the starting point for discovering the User KeyNotes file in a folder "KeyNotes". The keynotes file should be named to end in "\_Keyed_Notes.txt". The file name for any single discovered file is passed to the KeyNote editor application to open upon startup.
 
-###Therefore:
+### Therefore:
 
 - The Revit file should be workshared if the ribbon's KeyNote editor application launcher is expected to work as designed.
 - The User KeyNotes file should be named to end in "\_Keyed_Notes".
