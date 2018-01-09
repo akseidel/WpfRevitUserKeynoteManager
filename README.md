@@ -1,6 +1,5 @@
 ![](WpfRevitUserKeynoteManager/images/keynotes.png)
-
-#WpfRevituserKeynoteManager is a KeyNote Editor
+# WpfRevituserKeynoteManager is a KeyNote Editor
 
 - 	The WpfRevituserKeynoteManager is for editing a Revit Userkeynote table files. It allows more than one person at a time to edit keynotes at the same time provided they are each editing different keynote categories.
 
@@ -16,7 +15,7 @@
 - 	The editor also saves and displays all previous keynote file versions.
 
 
-##The Parts
+## The Parts
 
 The following image shows the editor.
 
@@ -70,7 +69,7 @@ Adding to a blank existing note is an edit task. The same image below shows the 
 
 ![](WpfRevitUserKeynoteManager/images/RevitKeyNotesExplainedjpg_Page6_Image1.jpg)
 
-##KeyNote Numbering
+## KeyNote Numbering
 
 ![ ](WpfRevitUserKeynoteManager/images/RevitKeyNotesExplainedjpg_Page7_Image1.jpg)
 
@@ -104,7 +103,7 @@ E-10000.02
 E-10000.03
 E-10000.04
 ```
-##Adding Categories
+## Adding Categories
 
 Adding categories can be done on the Resources tab.
 
@@ -112,7 +111,7 @@ Adding categories can be done on the Resources tab.
 
 ![](WpfRevitUserKeynoteManager/images/RevitKeyNotesExplainedjpg_Page8_Image1.jpg)
 
-##Viewing Edit History
+## Viewing Edit History
 
 Viewing edit history is for reference purposes. It happens on the Resources tab. Viewing the prior edit states does not revert the keynote table file to a previous state.
 
