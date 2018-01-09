@@ -1,0 +1,13 @@
+﻿<Application x:Class="WpfRevitUserKeynoteManager.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:WpfRevitUserKeynoteManager"
+             Startup="App_Startup"
+             Exit="Application_Exit">
+    <Application.Resources>
+         
+    </Application.Resources>
+</Application>
+
+<!--Note what is different here than ususal is the Exit event. It is used to 
+    clean up the SingleInstance code.-->

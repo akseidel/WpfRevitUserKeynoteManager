@@ -1,0 +1,167 @@
+﻿<Window x:Class="WpfRevitUserKeynoteManager.Instructions"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfRevitUserKeynoteManager"
+        xmlns:controls="clr-namespace:WpfRevitUserKeynoteManager"
+        mc:Ignorable="d"
+        Title="HowTo"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
+        BorderThickness="0"
+        d:DesignHeight="1400"
+        d:DesignWidth="900"
+        MaxHeight="{Binding Source={x:Static SystemParameters.PrimaryScreenHeight}, Converter={local:RatioConverter}, ConverterParameter='0.9' }"
+        MaxWidth="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, Converter={local:RatioConverter}, ConverterParameter='0.9' }"
+        ResizeMode="CanResizeWithGrip"
+        MouseDown="DragWindow"
+        xmlns:p="clr-namespace:WpfRevitUserKeynoteManager.Properties"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        Height="{Binding Source={x:Static p:Settings.Default}, Path=Help_Height, Mode=TwoWay}"
+        Width="{Binding Source={x:Static p:Settings.Default}, Path=Help_Width, Mode=TwoWay}"
+        Left="{Binding Source={x:Static p:Settings.Default}, Path=Help_Left, Mode=TwoWay}"
+        Top="{Binding Source={x:Static p:Settings.Default}, Path=Help_Top, Mode=TwoWay}"
+        Loaded="Window_Loaded"
+        Activated="Window_Activated">
+
+    <!--The SizeTocontent overrides the height and width saving.-->
+    <!--SizeToContent="WidthAndHeight"-->
+
+    <Window.Resources>
+        <local:InvertedBoolenConverter x:Key="InvertedBoolenConverter" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <local:PathToImage x:Key="PathToImage" />
+        <sys:String x:Key="TheImage">keynotes.ico</sys:String>
+        <Style x:Key="{x:Type ToolTip}"
+               TargetType="ToolTip">
+            <Setter Property="OverridesDefaultStyle"
+                    Value="true" />
+            <Setter Property="HasDropShadow"
+                    Value="True" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToolTip">
+                        <Border Name="Border"
+                                BorderThickness="2"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                Background="AliceBlue"
+                                BorderBrush="DarkGray">
+                            <ContentPresenter Margin="4"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Top" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="HasDropShadow"
+                                     Value="true">
+                                <Setter TargetName="Border"
+                                        Property="CornerRadius"
+                                        Value="14" />
+                                <Setter TargetName="Border"
+                                        Property="SnapsToDevicePixels"
+                                        Value="true" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="CharacterCasing"
+                    Value="Upper" />
+        </Style>
+        <Style x:Key="{x:Type Label}"
+               TargetType="{x:Type Label}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Label}">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                Padding="{TemplateBinding Padding}"
+                                SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              RecognizesAccessKey="False"
+                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled"
+                                     Value="false">
+                                <Setter Property="Foreground"
+                                        Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+    </Window.Resources>
+
+    <Border x:Name="Body"
+            Background="AliceBlue"
+            CornerRadius="24"
+            BorderThickness="3"
+            BorderBrush="DarkGray">
+        <TabControl x:Name="TabControlMainHelp"
+                    TabStripPlacement="Left"
+                    MinWidth="600"
+                    Margin="16">
+            <TabItem x:Name="TabHelp"
+                     Header="Help"
+                     FontSize="14"
+                     Height="40"
+                     Selector.Selected="OnHelpTabSelected">
+                <DockPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="LabelHelpTextFileName"
+                               Content="{Binding Path=HelpTextFileName, UpdateSourceTrigger=PropertyChanged}"
+                               Grid.Row="0"
+                               Grid.Column="0"
+                               Padding="6" />
+                        <controls:RichTextFile x:Name="RichTextFileHelp"
+                                               Grid.Row="1"
+                                               Grid.Column="0"
+                                               File="{Binding File}"
+                                               ScrollViewer.CanContentScroll="True"
+                                               VerticalScrollBarVisibility="Auto"
+                                               HorizontalScrollBarVisibility="Auto"
+                                               IsEnabled="True"
+                                               IsReadOnly="True"
+                                               IsReadOnlyCaretVisible="True"
+                                               IsDocumentEnabled="True"
+                                               HorizontalContentAlignment="Stretch"
+                                               AllowDrop="False" >
+                            <FlowDocument>
+                                <Paragraph>
+                                    <!--<Image Source="{Binding {StaticResource TheImage},Converter={StaticResource PathToImage}}"
+                                           Width="32"
+                                           Height="32" />-->
+                                    <Run FontSize="14">Loading ...</Run>
+                                </Paragraph>
+
+                            </FlowDocument>
+                            
+                        </controls:RichTextFile>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+            <TabItem x:Name="TabHelpClose"
+                     Header="Close"
+                     FontSize="14"
+                     Height="40"
+                     Selector.Selected="OnHelpTabSelected" />
+
+        </TabControl>
+    </Border>
+</Window>
