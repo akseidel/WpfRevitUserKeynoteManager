@@ -1980,7 +1980,7 @@ namespace WpfRevitUserKeynoteManager
         // home edit needs to be added
         private void LoadThisHistoryFile(string thisKNF)
         {
-            if (KNS.Knfolder != null)
+            if (KNS.Knfolder != null && thisKNF != null)
             {
                 string priorsPath = Path.Combine(KNS.Knfolder, priorsfolder);
                 // Oddly, Path.Combine does not combine a path to a fully formed pathname.
@@ -2002,8 +2002,11 @@ namespace WpfRevitUserKeynoteManager
             if (direction == 0)
             {
                 string thisKNF = Path.Combine(Knfolder, Knfile);
-                LoadThisHistoryFile(thisKNF);
-                KNS.HistIndex = "Current";
+                if (thisKNF != null)
+                {
+                    LoadThisHistoryFile(thisKNF);
+                    KNS.HistIndex = "Current";
+                }
                 return;
             }
             string curfileshowing = string.Empty;
@@ -2034,6 +2037,8 @@ namespace WpfRevitUserKeynoteManager
             List<string> theHistoryList = files.ToList<string>();
             theHistoryList.Sort();
             KNS.Historybuttontext = "History Has " + theHistoryList.Count.ToString() + " Files";
+
+            if (theHistoryList.Count == 0) { return; }
 
             // correction for when the current file showing has nothing to do with the keynote file
             if (KNS.HistTextFileName.Contains(rootKNSname))
