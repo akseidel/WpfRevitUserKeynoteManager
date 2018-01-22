@@ -240,8 +240,7 @@ namespace WpfRevitUserKeynoteManager
         }
 
         private string EstablishKNFFileName(string atThisPath, string forThisFile)
-        {
-            string orginalKNF = Path.Combine(atThisPath, forThisFile);
+        {   
             string thisKNF = ThisSelectedFile(atThisPath,
                 forThisFile, @"Rvt UserKeynote files (*.txt)|*.txt",
                 "Select the Revit UserKeynote File");
@@ -250,9 +249,15 @@ namespace WpfRevitUserKeynoteManager
             {
                 // assume user canceled, give opportunity to have the previous
                 // file reopened.
-                thisKNF = orginalKNF;
+                if (atThisPath != null) {
+                    string orginalKNF = Path.Combine(atThisPath, forThisFile);
+                    thisKNF = orginalKNF;
+                } else {
+                    return null;
+                }
             }
 
+            if (thisKNF.Equals(string.Empty)) { return null; }
             KNS.ReadOnly = IsFileReadOnly(thisKNF);
             KNS.Knfolder = Path.GetDirectoryName(thisKNF);
             KNS.Knfile = Path.GetFileName(thisKNF);
