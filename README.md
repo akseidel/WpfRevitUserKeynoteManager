@@ -133,11 +133,13 @@ Starting from scratch means there is not a user KeyNote table text file and ther
 
 The Revit project needs to be a workshared file.
 
-Click on the KeyNote Editor icon in the Revit ribbon. (This add-in for this is not included in this repository. Sorry.)
+Click on the KeyNote Editor icon in the Revit ribbon. (This add-in for this is not currently included in this repository. Sorry.)
 
 ![](WpfRevitUserKeynoteManager/images/RevitKeyNotesExplainedjpg_Page10_Image1.jpg)
 
 The KeyNote editor will launch and immediately show a Windows file open dialog box asking for the KeyNote text file to open because the active Revit project does not have a userkeynote table file assignment.
+
+*Note: The KeyNote command in the Revit ribbon add-in launches the keynote manager application with the keynote table file's folder and filename as application arguments to the keynote manager application. That is how the keynote manager application knows what table file to open. The keynote manager application assumes you want to browse to a table file when the arguments are missing or are in error some way.*
 
 Navigate to the folder holding the Revit project’s central file, **not the local file’s folder**.  Right click in the folder to add a new folder. Name that folder “**KeyNotes**”. The Windows file open dialog allows this type of activity.
 
@@ -267,3 +269,9 @@ Revit actually tolerates any order in the Revit User KeyNote text file. The typi
 The KeyNote editor is designed to be a “single instance windows presentation foundation application”. In other words, it does not allow a second instance of itself to run. It actually does this by checking to see if itself is one of more than one instance running. It closes itself out if that is the case.
 
 This means that if something crazy happens in Windows resulting in a zombie KeyNote editor running, i.e. the KeyNote editor running with no visibility, then the KeyNote editor will never run no matter how hard you click to launch it. (It does run but closes itself before you see it.) Restarting Windows would resolve this condition.
+
+## The KeyNote Revit Ribbon Add-in
+
+This is a placeholder for explaining the KeyNote Revit Ribbon Add-in.
+
+![](WpfRevitUserKeynoteManager/images/RevitKeyNotesExplainedjpg_Page10_Image1.jpg)
