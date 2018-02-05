@@ -16,7 +16,6 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using System.Windows.Markup;
 using System.Diagnostics;
-using System.Reflection;
 
 namespace WpfRevitUserKeynoteManager
 {
@@ -30,7 +29,6 @@ namespace WpfRevitUserKeynoteManager
         public string Knfolder { get; set; }
         public string Knfile { get; set; }
         private string priorsfolder = @"History\PriorKeynoteFiles\";
-       // private string InfoFileName = "RevitKeyNotesExplained.rtf";
         private char pipechar = '|';
         private char space = ' ';
         private string extRKU = ".RKU";
@@ -81,17 +79,24 @@ namespace WpfRevitUserKeynoteManager
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
               new Action(() => DataContext = KNS));
 
+            string thisKNF = null;
             if (Knfolder != null)
             {
+                // The flag indicating to startwithhelp is Knfolder = -h/. Knfolder
+                // needs to be changed to nothing. ThisKNF being null is what the keyfile
+                // picker returns when nothing is selected, so thisKNF is allowed to remain
+                // null. The startwithhelp flag is set to be acted on later.
                 if (Knfolder.Equals("-h/", StringComparison.CurrentCultureIgnoreCase))
                 {
                     startwithhelp = true;
-                    Knfolder = null;
+                    Knfolder = string.Empty;
+                }
+                else
+                {
+                    thisKNF = EstablishKNFFileName(Knfolder, Knfile);
                 }
             }
 
-            string thisKNF = null;
-            thisKNF = EstablishKNFFileName(Knfolder, Knfile); 
             if (IsThereExcelKeyedNoteSystem()) { this.Close(); return; };
             all = "*".PadRight(catcodepad) + space + pipechar + space + "*";
             RegisterStatusAsKeyNoteUser();
@@ -103,7 +108,6 @@ namespace WpfRevitUserKeynoteManager
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
              new Action(() => CatStateGrid.DataContext = KNS.KndatacatState));
             blvcats = KNS.KndatacatState.DefaultView;
-            //KNS.HelpTextFileName = InfoFileName;
             SetCounts();
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
             new Action(() => ComboCatCode.ItemsSource = KNS.KndatacatState.DefaultView));
@@ -142,9 +146,10 @@ namespace WpfRevitUserKeynoteManager
             {
 
             }
-
+            // Finally, act on startwithhelp.
             if (startwithhelp)
             {
+                MainStatusMsg("Starting with help open.");
                 startwithhelp = false;
                 SendIntoHelp();
             }
@@ -255,19 +260,22 @@ namespace WpfRevitUserKeynoteManager
         }
 
         private string EstablishKNFFileName(string atThisPath, string forThisFile)
-        {   
+        {
             string thisKNF = ThisSelectedFile(atThisPath,
-                forThisFile, @"Rvt UserKeynote files (*.txt)|*.txt",
-                "Select the Revit UserKeynote File");
-
+                    forThisFile, @"Rvt UserKeynote files (*.txt)|*.txt",
+                    "Select the Revit UserKeynote File");
+           
             if (thisKNF == null)
             {
                 // assume user canceled, give opportunity to have the previous
                 // file reopened.
-                if (atThisPath != null) {
+                if (atThisPath != null)
+                {
                     string orginalKNF = Path.Combine(atThisPath, forThisFile);
                     thisKNF = orginalKNF;
-                } else {
+                }
+                else
+                {
                     return null;
                 }
             }

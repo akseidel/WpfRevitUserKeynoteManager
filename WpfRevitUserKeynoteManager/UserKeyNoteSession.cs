@@ -49,7 +49,6 @@ namespace WpfRevitUserKeynoteManager
         private string histTextFileName = string.Empty;
         private string histIndex = string.Empty;
         private string helpText = string.Empty;
-        private string helpTextFileName = string.Empty;
         private bool readOnly = true;
         private List<string> newCategories = new List<string>();
         private bool seenNewCatMsg = false;
@@ -64,7 +63,6 @@ namespace WpfRevitUserKeynoteManager
         public Single Keyincval { get { return keyincval; } set { keyincval = value; OnPropertyChanged("Keyincval"); } }
         public bool SeenNewCatMsg { get { return seenNewCatMsg; } set { seenNewCatMsg = value; OnPropertyChanged("SeenNewCatMsg"); } }
         public List<string> NewCategories { get { return newCategories; } set { newCategories = value; OnPropertyChanged("NewCategories"); } }
-        public string HelpTextFileName { get { return helpTextFileName; } set { helpTextFileName = value; OnPropertyChanged("HelpTextFileName"); } }
         public string HelpText { get { return helpText; } set { helpText = value; OnPropertyChanged("HelpText"); } }
         public bool ReadOnly { get { return readOnly; } set { readOnly = value; OnPropertyChanged("ReadOnly"); } }
         public string HistTextFileName { get { return histTextFileName; } set { histTextFileName = value; OnPropertyChanged("HistTextFileName"); } }
