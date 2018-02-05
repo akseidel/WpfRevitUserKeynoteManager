@@ -30,7 +30,7 @@ namespace WpfRevitUserKeynoteManager
         public string Knfolder { get; set; }
         public string Knfile { get; set; }
         private string priorsfolder = @"History\PriorKeynoteFiles\";
-        private string InfoFileName = "RevitKeyNotesExplained.rtf";
+       // private string InfoFileName = "RevitKeyNotesExplained.rtf";
         private char pipechar = '|';
         private char space = ' ';
         private string extRKU = ".RKU";
@@ -50,6 +50,7 @@ namespace WpfRevitUserKeynoteManager
         private string TempLastKey = "*";
         private Dictionary<string, List<string>> dictionaryPending = new Dictionary<string, List<string>>();
         private bool exitnormally = true;
+        private bool startwithhelp = false;
         Instructions HowTo;
 
         public MainWindow()
@@ -79,8 +80,18 @@ namespace WpfRevitUserKeynoteManager
             KNS = new UserKeyNoteSession();
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
               new Action(() => DataContext = KNS));
-            string thisKNF;
-            thisKNF = EstablishKNFFileName(Knfolder, Knfile);
+
+            if (Knfolder != null)
+            {
+                if (Knfolder.Equals("-h/", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    startwithhelp = true;
+                    Knfolder = null;
+                }
+            }
+
+            string thisKNF = null;
+            thisKNF = EstablishKNFFileName(Knfolder, Knfile); 
             if (IsThereExcelKeyedNoteSystem()) { this.Close(); return; };
             all = "*".PadRight(catcodepad) + space + pipechar + space + "*";
             RegisterStatusAsKeyNoteUser();
@@ -92,7 +103,7 @@ namespace WpfRevitUserKeynoteManager
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
              new Action(() => CatStateGrid.DataContext = KNS.KndatacatState));
             blvcats = KNS.KndatacatState.DefaultView;
-            KNS.HelpTextFileName = InfoFileName;
+            //KNS.HelpTextFileName = InfoFileName;
             SetCounts();
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
             new Action(() => ComboCatCode.ItemsSource = KNS.KndatacatState.DefaultView));
@@ -131,8 +142,12 @@ namespace WpfRevitUserKeynoteManager
             {
 
             }
-            // Load the help file at the very end on a thread
-            //System.Threading.ThreadPool.QueueUserWorkItem(delegate { LoadUpHelpFile(); }, null);
+
+            if (startwithhelp)
+            {
+                startwithhelp = false;
+                SendIntoHelp();
+            }
         }
 
         private void CloseOnEscape(object sender, KeyEventArgs e)
@@ -2222,9 +2237,14 @@ namespace WpfRevitUserKeynoteManager
 
         private void TabHelp_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
+            SendIntoHelp();
+            e.Handled = true;
+        }
+
+        private void SendIntoHelp()
+        {
             if (HowTo == null) { HowTo = new Instructions(); }
             HowTo.Show();
-            e.Handled = true;
         }
 
         private void TabQuit_PreviewMouseDown(object sender, MouseButtonEventArgs e)
