@@ -5,17 +5,17 @@
 
 - 	The editor notifies each user working within the same table as to what each user is doing. When someone commits an edit, the table is automatically reloaded at every user.
 
-- 	Updating the table in Revit is still up to the user to initiate using a Revit add-in that places a conveinent update button on the Revit ribbon.
+- 	Updating the table in Revit is still up to the user to initiate using a Revit add-in that places a convenient update button on the Revit ribbon.
 
 
 ![](WpfRevitUserKeynoteManager/images/RevitKeyNotesExplainedjpg_Page1_Image2.jpg)
 
-- This repository does not currently contain that Revit add-in (1/9/2018).
+- This repository does not currently contain that Revit add-in. (This add-in is planned to be in this repository: (*a link goes here*).
 
 - The editor also saves and displays all previous keynote file versions.
 
 #### Some quick notes for those interested in the coding
-- The multiple simultaneous editing is accomplished using temporary user status files at the keynote table file folder and a background thread that constantly polls the keynote table file folder for changes.
+- The multiple simultaneous table file editing is accomplished using temporary user status files at the keynote table file folder and a background thread that constantly polls the keynote table file folder for changes.
 - The editor runs in single instance mode. That means it checks to see if there is already an instance running. This avoids more than one instance running, which would be problem. The editor is designed to be launched in Revit with an add-in that appends the Revit project userkeynote table file name as a command argument. Thus the same user editing the same table on the same machine is avoided.
 - A borderless, transparent WPF window is how the application's look achieved.
 
@@ -57,7 +57,7 @@ The note text edit box is where you edit. Double clicking a note in the table se
 
 You can drag notes from Word into the note edit box. You can also cut and paste into it.
 
-The Setting area is where to select the category from the Category Selector. It is also where notes can be found by text searching. Simple text replacing can also be performed.
+The Setting area is where to select the category from the Category Selector. It is also where notes can be found by text searching. Simple text replacing can be performed.
 
 In this next image, all notes containing the text “brace” are shown. The “WRD” button toggles the search between whole word or partial word. Notes from different categories are displayed in this image because “All The Notes” instead of a single category is selected.
 
@@ -133,7 +133,7 @@ Starting from scratch means there is not a user KeyNote table text file and ther
 
 The Revit project needs to be a workshared file.
 
-Click on the KeyNote Editor icon in the Revit ribbon. (This add-in for this is not currently included in this repository. Sorry.)
+Click on the KeyNote Editor icon in the Revit ribbon. (This add-in for this is planned to be in this repository: (*a link goes here*)
 
 ![](WpfRevitUserKeynoteManager/images/RevitKeyNotesExplainedjpg_Page10_Image1.jpg)
 
@@ -159,14 +159,15 @@ Close out the KeyNote Editor by selecting the Quit Tab. Again, click on the KeyN
 
 ## About Revit User KeyNotes and why this tool does what it does and why it does not do certain things.
 
-A Revit **User KeyNote** is a special tag type family instance that "tags" model objects only with annotation showing a key value, like a number for example. That key value is associated to some text. The associated text and its key value is maintained in a “**Keynote Table**” text file outside of and therefore separate from the Revit file.
+A Revit **User KeyNote** is a special tag type family instance that "tags" *model objects only* with annotation that shows a key value, like a number for example. That key value is associated to some text. The key values and their associated text are displayed together in a Revit “**Legend**”. The associated text and its key value is maintained in a “**Keynote Table**” text file *outside of and therefore separate from the Revit file.*
 
 The “**Keynote Table**” text filename is set in settings for UserKeyNotes. Revit allows only one such file set to a Revit project.
 
-Keep in mind all Revit tags apply to model objects only. You cannot use them in detail views or use them to tag a detail or annotation class object mixed in with model objects in a plan view.   
+Keep in mind *all Revit tags apply to model objects only.* You cannot use them in detail views or use them to tag a detail or annotation class object mixed in with model objects in a plan view because in each of those instances you would be trying to tag something that is not a model object.
 
-There are two reasons for the keynote editor. The keynote table is a separate file from the Revit project file and Revit does not provide a way to edit the table. One can edit the keynote table with any text editor, but the keynote table is easily damaged if one does not understand or follow the strict keynote table file structure. No ordinary text editor is designed to organize the note editing tasks for how the table is used in Revit. Furthermore, shared editing is not a feature in a typical text editor.
+There are two reasons for the keynote editor. One is that the keynote table is a separate file from the Revit project file and Revit does not provide a way to edit the table. Any text editor application can edit the keynote table, but the keynote table is easily damaged if one does not understand or follow the strict keynote table file structure. The second reason is no ordinary text editor is designed to organize the note editing tasks for how the table is used in Revit. Furthermore, shared editing is not a feature in a typical text editor.
 
+###Format :  note line
 The format for a typical note line in that **Keynote Table** is:
 
 ```
@@ -185,6 +186,7 @@ In the next image you see the above example note in the Revit key value selectio
 
 Revit does not show the organizing code after the text content. That code tells Revit how to show the note hierarchy. In this case the F tells Revit to show the note in the F FIRE PROTECTION grouping.
 
+###Format :  category group line
 
 The format for defining the organizing codes in that **Keynote Table** is:
 
@@ -199,79 +201,86 @@ F  <tab>  FIRE PROTECTION
 ```
 The Keynote editor uses the name “Category” when referring to the organizing structure.
 
-There is no occurrence order required for the  keynote text lines and the category organizing code definitions within the Keynote Table text file. It can be totally random. Revit sorts the data prior to showing it in the key value selection interface.
+###General Table Structure
+
+There is no occurrence order required for the keynote text lines and the category organizing code definitions within the Keynote Table text file. It can be totally random. Revit sorts the data prior to showing it in the key value selection interface.
 
 The Keynote editor displays the categories in alphabetical order. It writes the Keynote Table text file with the categories listed first followed by the keynotes.
 
-The most recently reserved category definition is always written first. The keynotes for that category are always written last in their numerical order. The table’s information in between is written in the order it was in the previously saved table file.
+The Keynote editor writes to the table most recently reserved category definition first followed by the remaining category definitions. Conversely the keynotes for that category are always written last in their numerical order. The table’s information in between is written in the order it was in the previously saved table file. The reason for this is simply because this method allows a single pass to write a new table while reading an existing table that is possibly contains random elements.
+
+###User KeyNote Usage
 
 In Revit these User KeyNote tags can then be shown in a special Revit "Legend" placed on drawing sheets. The legend shows the key value next to the text. In loose layman's terms this is "keyed notes on a drawing sheet".
 
-In Revit where every item must be understood in terms of its specific Revit object name, we are dealing with User KeyNotes, being a special family annotation class having a key value associated to a line of text where that text is saved in a separate file. The legend is a special legend class meant for showing user keynote information.
+In Revit where every item must be understood in terms of its specific Revit object name, User KeyNotes are a special family annotation class where a “key value” is associated to a line of text where that text is saved in a separate file. The legend is a special legend class meant for showing user keynote information.
 
 The Revit "Legend" is similar to a Revit "Schedule" except for one very important difference. Unlike a Revit Schedule, one single Revit User KeyNote Legend can automatically show only the User KeyNotes visible on the sheet instead of all the User KeyNotes in the Revit file. A regular Revit Schedule is not intended for that purpose.
 
-Yes, you can fake this behavior with a Revit Schedule, but doing so requires a different custom Schedule for each sheet and then layers of custom family features you maintain in each keynote instance for filters in the custom Schedules to show only certain notes.
+You can fake this behavior with a Revit Schedule, but doing so requires a different custom Schedule for each sheet along with layers of custom family features you maintain in each keynote instance for filter schemes you devise in the custom Schedules to show only certain notes.
 
 With Revit User KeyNotes you select a model object the keynote will point to. This is "hosting". You then select the keynote "number" that is associated to the text that you want Revit to show in the User KeyNote Legend. Revit gets the key number and the text from the external User KeyNote table text file.
 
-The advantage to hosting is that the note follows the host around and the note disappears when the host is deleted. The disadvantage to hosting is that the note follows the host around and the note disappears when the host is deleted.
+- The advantage to hosting is that the note follows the host around and the note disappears when the host is deleted.
+- The disadvantage to hosting is that the note follows the host around and the note disappears when the host is deleted.
 
-Revit retains the information is read from the last time it read the User KeyNote table text file. It re-reads the file every time you open the project Revit file and it can be commanded to reread the file during a Revit session. All previously read User KeyNote table data will be retained in a Revit project when Revit cannot find the table data file to read. All previously assigned key values not found in subsequent table data files
-
-Revit does not automatically update from a changed User KeyNote table text file. It does tell you when plotting when the table file on disk has a newer date than the last time it read the table file.
+###Legends
 
 Revit keynote legends in the views browser display all the user keynotes placed in the project according to the legend’s filters. Legends placed on a sheet can show only those user keynotes visible in the other views placed on that same sheet. Alternatively, it can also show all the user keynotes placed in the project. In both cases the legend’s display filters apply.
 
-The control for sheet only versus all in project display is not a legend setting. It is a user keynote setting.   
+- The control for sheet only versus all in project display is not a legend setting. It is a user keynote setting.
+The Associated Text
 
-The text associated to a User KeyNote is from the external User KeyNote text file. The ONLY two things Revit knows for sure about a User KeyNote is the "key value", i.e. the note number AND the name of the single User KeyNote file associated with the Revit file.
+###The Associated Text
 
-Revit uses those two pieces to extract the note's text from the external file. It does this when the project loads and every time you reload the User KeyNote text file. The Revit project file remembers the last retrieved text for each key value in case the User KeyNote text file is not found again.
+The ONLY two things Revit knows for sure about a User KeyNote is the "key value", i.e. the note number AND the name of the single User KeyNote file associated with the Revit file. The associated text is always what Revit collected the last time it has read the external table file.
 
-When it comes time again for Revit to read that external text file, Revit is not looking for the text to find the number ("key value"). It instead uses the key number to find the associated text in the User KeyNote file.
-The analogy to lock key is a way to think about this. The “key value” is like a labeled room key for a hotel where the labeled room keys open the hotel room having the same number as on the key on its door. Inside each room is the keynote text.
+Thus the project file is portable without the table file. It re-reads the table file every time you open the project Revit file. It can be commanded to reread the file during a Revit session. The “UpDate” command on the custom KeyNoteEditor Revit ribbon add-in performs the update in a single click.  
 
-Hotel room numbers do not change. Think what happens if you were to change the numbers in the external User KeyNote text file. That would be like changing the room numbers on the room doors in a hotel. The room keys already handed out could open a different room, because they work that in this odd hotel, and therefore the wrong keynote text is collected.
+Revit uses those two pieces to extract the note's text from the external file. It does this when the project loads and every time you reload the User KeyNote text file.
 
-This User KeyNote manager tool does not have features to renumber or delete notes. When the keynote table keys are renumbered and when table keys are deleted, then the next time Revit reads the keynote table the notes that were renumbered would show the wrong text and the notes that were deleted would show a question mark.
+- The Revit project file remembers the last retrieved text for each key value ***in case the User KeyNote text table file is not found . If the (or a) table file is found and that table does not contain the key value, then the associated text is shown blank because it no longer exists in the project file.***
 
-Revit User KeyNotes has a way to divide user keynotes into different categories. The Revit User KeyNote selector user interface separates the selections. Thus, you can categorize keynotes by disciplines Electrical, Mechanical and Plumbing etc.
+When it comes time again for Revit to read that external text file, Revit uses the "key value" to find the associated text in the User KeyNote file. All previously assigned key values not found in subsequent found table data files maintain their key values but will have no associated text.
 
-Because there can be only one external Revit User KeyNote file, multiple Revit users must wait their turn to edit the single external User KeyNote file. This KeyNote editor application allows multiple Revit users to edit the User KeyNote file as long as they are editing different categories. That is what "reserving" a category is about. Users "reserve" a category when they want to make an edit.
+The analogy to a key is a way to think about this. The “key value” is similar to a room numbered hotel room key. In this analogy all the keys and locks are the same. The only difference is the room number on each key. Inside the room is the associated keynote text.
 
-Reserving a category causes others using the KeyNote editor application to be locked out of editing a category while you edit and subsequently "commit" your changes before giving up the category for other to be able to edit.
+Hotel room numbers do not change. Think what happens if you were to change the numbers in the external User KeyNote text file. That would be like changing the room numbers on the room doors in a hotel. The room keys already handed out could now send guests to a wrong room, because in this odd hotel the keys are the same except for the room numbers on the key.
 
-The KeyNote editor application session messages informs what other users are doing. The KeyNote editor constantly monitors the keynote table file’s folder for activity. User activity is conveyed through \*.RKU (“Revit Keynote User”) text files created, changed and deleted by the KeyNote editor during its normal operations.
+When the keynote table keys are renumbered and when table keys are deleted, then the next time Revit reads the keynote table the notes that were renumbered would show the wrong text. For this reason this User KeyNote manager tool does not have features to renumber or delete notes.
 
-When you "commit" a category with the KeyNote editor you are actually recreating the external User KeyNote text file with changes made only to the category you have reserved. A copy of the original external User KeyNote text file is filed away into a "History" folder just prior to that file recreation. Therefore, prior versions of the external User KeyNote file are maintained in case needed. The saved prior versions are saved with timestamps added to their file names.
+Revit does not automatically update from a changed User KeyNote table text file. It does tell you when plotting when the table file on disk has a newer date than the last time it read the table file. You may receive this notice when using the KeyNoteEditor if you make an empty commit after Revit’s last keynote table read. Revit assumes the change in the table file’s last edit date is an edit.
+
+###Behind The Scenes
+
+Behind the scenes the KeyNote editor application creates and deletes simple \*.RKU (“Revit Keynote User”) text files at the keynote table file’s folder that it uses to relay session messages to other users also running the KeyNote editor application.
+
+When you "commit" a category with the KeyNote editor you are actually recreating the external User KeyNote text file with changes made only to the category you have reserved. A copy of the original external User KeyNote text file saved with timestamps added to the file name is filed away into a "History" folder just prior to that file recreation. Therefore, prior versions of the external User KeyNote file are maintained in case they are ever needed at a folder "/KeyNotes/History/PriorKeynoteFiles" it creates. The "Step Back" and "Step Forward" feature shows the historical files. You can cut and paste to retrieve prior information.
 
 The KeyNote editor application knows when you and others have made changes to the User KeyNote file. It tells you when the file is new. It also automatically reloads the new User KeyNote file back into itself but it does not automatically reload the User KeyNote file into Revit.
 
-A Revit reload causes Revit to repopulate its keynote database and its impact on views. It takes too long to have an automatic reload be of use. It is up to you to use the KeyNote editor ribbon command for reloading and to use the KeyNote editor reload button.
-
-The file format for the Revit User KeyNote text file is actually very simple. It is simple enough for someone to use a Text editor to make easy whole line changes like removing categories. However, it would be tedious to create and edit notes on an individual basis. One simple format mistake can mess up the table text file.
+A Revit reload causes Revit to repopulate its keynote database and its impact on views. It takes too long to have a Revit automatic reload be of use. It is up to you to use the KeyNote editor ribbon command for reloading and to use the KeyNote editor reload button.
 
 Removing an entire category is an edit best left to editing the User KeyNote table text file directly in a Text editor because it involves deleting whole lines only.
 
 The Revit ribbon command that runs the KeyNote editor application assumes the current Revit project file is workshared. It uses the workshared file's central file path as the starting point for discovering the User KeyNotes file in a folder "KeyNotes". The keynotes file should be named to end in "\_Keyed_Notes.txt". The file name for any single discovered file is passed to the KeyNote editor application to open upon startup.
 
-### Therefore:
+###Therefore:
 
-- The Revit file should be workshared if the ribbon's KeyNote editor application launcher is expected to work as designed.
-- The User KeyNotes file should be named to end in "\_Keyed_Notes".
-- The User KeyNotes file should be in folder named "KeyNotes" residing in the central file's folder.
+-	The Revit file should be workshared if the ribbon's KeyNote editor application launcher is expected to work as designed.
+-	The User KeyNotes file should be named to end in "\_Keyed_Notes".
+-	The User KeyNotes file should be in folder named "KeyNotes" residing in the central file's folder.
 
-The KeyNote editor application saves copies of all KeyNoteFile saved states at a folder "/KeyNotes/History/PriorKeynoteFiles" it creates. The "Step Back" and "Step Forward" feature shows the historical files. You can cut and paste to retrieve prior information.
-
-Revit actually tolerates any order in the Revit User KeyNote text file. The typical User KeyNote text file convention writes the categories first followed by the keynotes for the categories. The KeyNote editor application follows the convention, but places the "reserved" category as the first category listed. However, the notes for the reserved category, i.e. the most recently changed category, are written at the end of the User KeyNote text file.
+###Single Instance WPF Application
 
 The KeyNote editor is designed to be a “single instance windows presentation foundation application”. In other words, it does not allow a second instance of itself to run. It actually does this by checking to see if itself is one of more than one instance running. It closes itself out if that is the case.
 
-This means that if something crazy happens in Windows resulting in a zombie KeyNote editor running, i.e. the KeyNote editor running with no visibility, then the KeyNote editor will never run no matter how hard you click to launch it. (It does run but closes itself before you see it.) Restarting Windows would resolve this condition.
+For whatever reason if you happen to be already running the KeyNote editor then trying to activate the KeyNote editor from the custom Revit ribbon add-in will seem like noting is happening. In fact the application sees itself already running and will shut its newly starting self down before you get a chance to see it.
+
+Also, and this has not been seen, if something crazy happens in Windows resulting in a zombie KeyNote editor running, i.e. the KeyNote editor running with no visibility, then the KeyNote editor will never run no matter how hard you click to launch it. (It does run but closes itself before you see it.) Restarting Windows would resolve this condition.
 
 ## The KeyNote Revit Ribbon Add-in
 
-This is a placeholder for explaining the KeyNote Revit Ribbon Add-in.
+This is a placeholder for a link to the KeyNote Revit Ribbon Add-in readme.
 
 ![](WpfRevitUserKeynoteManager/images/RevitKeyNotesExplainedjpg_Page10_Image1.jpg)
