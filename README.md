@@ -292,6 +292,23 @@ For whatever reason if you happen to be already running the KeyNote editor then 
 
 Also, and this has not been seen, if something crazy happens in Windows resulting in a zombie KeyNote editor running, i.e. the KeyNote editor running with no visibility, then the KeyNote editor will never run no matter how hard you click to launch it. (It does run but closes itself before you see it.) Restarting Windows would resolve this condition.
 
+### Command Line arguments
+
+- WpfRevitUserKeynoteManager.exe usually expects two space separated command line arguments. For example the command to start the editor looking at the file named "ThisTable_KEYED_NOTES.txt" located at the folder 'C:\MyFolderNamedThis\' is:
+
+```
+WpfRevitUserKeynoteManager.exe C:\MyFolderNamedThis\ ThisTable_KEYED_NOTES.txt
+```
+
+- Starting WpfRevitUserKeynoteManager.exe in help mode is a special case. The command is:
+
+```
+WpfRevitUserKeynoteManager.exe -h
+```
+
+When trying these arguments out, especially the help mode, remember WpfRevitUserKeynoteManager.exe will not appear to launch if it already running.
+
+
 ## The KeyNote Revit Ribbon Add-in
 
 - (The repository for **RevitAddinKeyNoteSystem** is here:
