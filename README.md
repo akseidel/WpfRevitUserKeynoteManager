@@ -5,19 +5,30 @@
 
 - 	The editor notifies each user working within the same table as to what each user is doing. When someone commits an edit, the table is automatically reloaded at every user.
 
-- 	Updating the table in Revit is still up to the user to initiate using a Revit add-in that places a convenient update button on the Revit ribbon.
+- 	Updating the table in Revit is still up to the user to initiate using a Revit add-in (**RevitAddinKeyNoteSystem**) that places a convenient update button on the Revit ribbon.
 
 
 ![](WpfRevitUserKeynoteManager/images/RevitKeyNotesExplainedjpg_Page1_Image2.jpg)
 
-- This repository does not currently contain that Revit add-in. (This add-in is planned to be in this repository: (*a link goes here*).
+- The repository for **RevitAddinKeyNoteSystem** is here:
+[RevitAddinKeyNoteSystem][13a06118]
+
+
+  [13a06118]: https://github.com/akseidel/RevitAddinKeyNoteSystem "https://github.com/akseidel/RevitAddinKeyNoteSystem"
 
 - The editor also saves and displays all previous keynote file versions.
 
 #### Some quick notes for those interested in the coding
 - The multiple simultaneous table file editing is accomplished using temporary user status files at the keynote table file folder and a background thread that constantly polls the keynote table file folder for changes.
-- The editor runs in single instance mode. That means it checks to see if there is already an instance running. This avoids more than one instance running, which would be problem. The editor is designed to be launched in Revit with an add-in that appends the Revit project userkeynote table file name as a command argument. Thus the same user editing the same table on the same machine is avoided.
+- The editor runs in single instance mode. It allows itself to run only if there are no other instances running. The newly running instances shut themselves down before they become visible. This avoids more than one instance running, which would be problem. The editor is designed to be launched in Revit using a command button on the **RevitAddinKeyNoteSystem** add-in ribbon panel. That command launches the editor application with the current Revit project's userkeynote table file pathname as a command argument. The editor's multiple user editing scheme is not robust enough to handle multiple edit sessions by the same user. The single instance behavior is one way to avoid the a user running multiple editing sessions on the same table on the same machine. The scheme is still vulnerable to the same user editing on different machines.
 - A borderless, transparent WPF window is how the application's look achieved.
+
+## Setup
+
+- **WpfRevitUserKeynoteManager** is a standalone application. The user needs access to the  WpfRevitUserKeynoteManager executable file.
+- The **WpfRevitUserKeynoteManager** executable file's pathname is currently hardcoded in the **RevitAddinKeyNoteSystem** add-in. That detail requires coordination.
+- The help file **RevitKeyNotesExplained.rtf** needs to be in the same folder as the executable WpfRevitUserKeynoteManager file. The **WpfRevitUserKeynoteManager** "Help" tab expects to find the **RevitKeyNotesExplained.rtf** file in executable's folder.
+- Being external, the **RevitKeyNotesExplained.rtf** file can be edited.
 
 ## The Parts
 
@@ -133,7 +144,9 @@ Starting from scratch means there is not a user KeyNote table text file and ther
 
 The Revit project needs to be a workshared file.
 
-Click on the KeyNote Editor icon in the Revit ribbon. (This add-in for this is planned to be in this repository: (*a link goes here*)
+Click on the KeyNote Editor icon in the Revit ribbon.
+
+
 
 ![](WpfRevitUserKeynoteManager/images/RevitKeyNotesExplainedjpg_Page10_Image1.jpg)
 
@@ -281,6 +294,7 @@ Also, and this has not been seen, if something crazy happens in Windows resultin
 
 ## The KeyNote Revit Ribbon Add-in
 
-This is a placeholder for a link to the KeyNote Revit Ribbon Add-in readme.
+- (The repository for **RevitAddinKeyNoteSystem** is here:
+[RevitAddinKeyNoteSystem][13a06118])
 
 ![](WpfRevitUserKeynoteManager/images/RevitKeyNotesExplainedjpg_Page10_Image1.jpg)
