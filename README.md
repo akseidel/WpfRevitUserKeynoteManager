@@ -3,7 +3,7 @@
 
 - 	The WpfRevituserKeynoteManager is for editing a Revit Userkeynote table files. It allows more than one person at a time to edit keynotes at the same time provided they are each editing different keynote categories.
 
-- 	The editor notifies each user working within the same table as to what each user is doing. When someone commits an edit, the table is automatically reloaded at every user.
+- 	The editor notifies each user working within the same table as to what each user is doing. When someone commits an edit, the table is automatically reloaded at every user's editor session.
 
 - 	Updating the table in Revit is still up to the user to initiate using a Revit add-in (**RevitAddinKeyNoteSystem**) that places a convenient update button on the Revit ribbon.
 
