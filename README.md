@@ -1,7 +1,7 @@
 # WpfRevituserKeynoteManager&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![](WpfRevitUserKeynoteManager/images/keynotes.png)
 # A KeyNote Editor
 
-- 	The WpfRevituserKeynoteManager is for editing a Revit Userkeynote table files. It allows more than one person to edit keynotes at the same time while on separet computers ans unique Revit sessions provided they are each editing different keynote categories.
+- 	The WpfRevituserKeynoteManager is for editing a Revit Userkeynote table files. It allows more than one person to edit keynotes at the same time while on separet computers and unique Revit sessions provided they are each editing different keynote categories.
 
 - 	The editor notifies each user working within the same table as to what each other user is doing. When someone commits an edit, the table is automatically reloaded at every user's editor session.
 
@@ -20,9 +20,9 @@
 
 #### Some quick notes for those interested in the coding
 - The multiple simultaneous table file editing capability is accomplished using temporary user status files at the keynote table file folder and a background thread that constantly polls the keynote table file folder for changes.
-- The editor runs in single instance mode. It allows itself to continue running only if there are no other instances running. The newly running instances shut themselves down before they become visible. This avoids more than one instance running, which would be problem. The editor is designed to be launched in Revit using a command button on the **RevitAddinKeyNoteSystem** add-in ribbon panel. That command launches the editor application with the current Revit project's userkeynote table file pathname as a command argument. The editor's multiple user editing scheme is not robust enough to handle multiple edit sessions by the same user. The single instance behavior is one way to prevent the user running multiple editing sessions on the same table on the same machine. The scheme is still vulnerable to the same user editing on different machines.
+- The editor runs in single instance mode. It allows itself to continue running only if there are no other instances running. Therefore a second or more running instance shuts itself down before becoming visible. This scheme avoids more than one instance running, which would be problem. The single instance behavior is one way to prevent the user running multiple editing sessions on the same table on the same machine. The scheme is still vulnerable to the same user editing on different machines.
 - A borderless, transparent WPF window is how the application achieves its look.
-- The TabControl metaphor that is typically expected by a user to switch to different tab pane view is for one tab control instance used as the quit command. This seemingly minor touch solved the quit problem in this author's application WPF paradigm where an ESC keypress would normally close the application. Revit users have to press ESC all the time. They would be constantly closing out the editor where normal use switches the user's focus between Revit and the editor.
+- The TabControl metaphor that is typically expected by a user to switch tab pane views is also used to quit the application. The Quit tab issues the quit command instead of switching to a tab pane. This seemingly minor touch solved the quit problem in this author's application WPF paradigm where an ESC keypress would normally close the application. Revit users have to press ESC all the time. They would be constantly closing out the editor.
 
 ## Setup
 
